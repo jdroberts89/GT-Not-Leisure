@@ -30,8 +30,8 @@ import cpw.mods.fml.common.FMLLog;
 public abstract class MixinWorld {
 
     @Final
-    @Shadow
-    public Profiler theProfiler;
+    @Shadow(remap = false)
+    public Profiler field_72984_F;
     @Shadow
     public List<Entity> weatherEffects;
     @Shadow
@@ -56,8 +56,8 @@ public abstract class MixinWorld {
         boolean isStop = TimeStopPocketWatch.isTimeStopped();
         if (!isStop) return;
 
-        this.theProfiler.startSection("entities");
-        this.theProfiler.startSection("global");
+        this.field_72984_F.startSection("entities");
+        this.field_72984_F.startSection("global");
         int i;
         Entity entity;
         CrashReport crashreport;
@@ -96,7 +96,7 @@ public abstract class MixinWorld {
             }
         }
 
-        this.theProfiler.endStartSection("remove");
+        this.field_72984_F.endStartSection("remove");
         this.loadedEntityList.removeAll(this.unloadedEntityList);
         int j;
         int l;
@@ -117,7 +117,7 @@ public abstract class MixinWorld {
         }
 
         this.unloadedEntityList.clear();
-        this.theProfiler.endStartSection("regular");
+        this.field_72984_F.endStartSection("regular");
 
         for (i = 0; i < this.loadedEntityList.size(); ++i) {
             entity = this.loadedEntityList.get(i);
@@ -132,7 +132,7 @@ public abstract class MixinWorld {
                 entity.ridingEntity = null;
             }
 
-            this.theProfiler.startSection("tick");
+            this.field_72984_F.startSection("tick");
 
             if (!entity.isDead) {
                 try {
@@ -152,8 +152,8 @@ public abstract class MixinWorld {
                 }
             }
 
-            this.theProfiler.endSection();
-            this.theProfiler.startSection("remove");
+            this.field_72984_F.endSection();
+            this.field_72984_F.startSection("remove");
 
             if (entity.isDead) {
                 j = entity.chunkCoordX;
@@ -168,11 +168,11 @@ public abstract class MixinWorld {
                 ((World) ((Object) this)).onEntityRemoved(entity);
             }
 
-            this.theProfiler.endSection();
+            this.field_72984_F.endSection();
         }
 
         if (!isStop) {
-            this.theProfiler.endStartSection("blockEntities");
+            this.field_72984_F.endStartSection("blockEntities");
             this.field_147481_N = true;
             Iterator<TileEntity> iterator = this.loadedTileEntityList.iterator();
 
@@ -226,7 +226,7 @@ public abstract class MixinWorld {
 
             this.field_147481_N = false;
 
-            this.theProfiler.endStartSection("pendingBlockEntities");
+            this.field_72984_F.endStartSection("pendingBlockEntities");
 
             if (!this.addedTileEntityList.isEmpty()) {
                 for (Object o : this.addedTileEntityList) {
@@ -255,8 +255,8 @@ public abstract class MixinWorld {
             }
         }
 
-        this.theProfiler.endSection();
-        this.theProfiler.endSection();
+        this.field_72984_F.endSection();
+        this.field_72984_F.endSection();
 
         if (isStop) ci.cancel();
     }
